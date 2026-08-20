@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
-import { CheckIcon, RefreshIcon, XIcon } from "./Icons";
+import { CheckIcon, RefreshIcon, XIcon, UploadIcon, MetaMark, ShopifyMark, GoogleMark } from "./Icons";
 import { fmtBytes } from "../lib/format";
 import { parseSourceFile } from "../lib/fileParse";
 
-const ICON_LETTER = { meta: "M", shopify: "S", google: "G" };
+const LOGO = { meta: MetaMark, shopify: ShopifyMark, google: GoogleMark };
 
 export default function UploadCard({
   source,
@@ -19,6 +19,7 @@ export default function UploadCard({
   const [dragOver, setDragOver] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  const Logo = LOGO[source];
 
   async function handleFile(file) {
     if (!file) return;
@@ -42,15 +43,17 @@ export default function UploadCard({
           <XIcon />
         </button>
       )}
-      <div className="uh">
-        <div className={"src-icon " + source}>{ICON_LETTER[source]}</div>
-        <div>
-          <div className="name">
-            {name}
-            {required ? <span className="badge-req">Required</span> : <span className="badge-opt">Optional</span>}
-          </div>
-          <div className="fields">{fieldsLabel}</div>
+
+      <div className={"uh-banner " + source}>
+        <Logo size={44} />
+      </div>
+
+      <div className="uh-body">
+        <div className="name">
+          {name}
+          {required ? <span className="badge-req">Required</span> : <span className="badge-opt">Optional</span>}
         </div>
+        <div className="fields">{fieldsLabel}</div>
       </div>
 
       <input
@@ -80,7 +83,7 @@ export default function UploadCard({
         </div>
       ) : (
         <div
-          className={"dropzone" + (dragOver ? " dragover" : "")}
+          className={"dropzone" + (dragOver ? " dragover" : "") + (busy ? " busy" : "")}
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
           onDragLeave={() => setDragOver(false)}
@@ -91,8 +94,14 @@ export default function UploadCard({
             handleFile(f);
           }}
         >
-          <div className="dz-main">{busy ? "Reading file…" : "Drop CSV or Excel here"}</div>
-          <div className="dz-sub">or click to browse · max 50 MB</div>
+          <span className="dz-pill">
+            {busy ? (
+              <span className="dz-spinner" />
+            ) : (
+              <UploadIcon width={13} height={13} />
+            )}
+            {busy ? "Reading file…" : "Drop CSV or Excel here"}
+          </span>
         </div>
       )}
       {error && <div className="error-msg">{error}</div>}

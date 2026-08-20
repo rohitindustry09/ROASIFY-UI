@@ -53,3 +53,60 @@ export const PanelIcon = (p) => (
 export const InboxIcon = (p) => (
   <svg {...base} width={40} height={40} {...p}><path d="M22 12h-6l-2 3h-4l-2-3H2" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z" /></svg>
 );
+
+/* ---- Source / brand marks (stylized, not literal trademarked artwork) ---- */
+
+export const MetaMark = ({ size = 40 }) => (
+  <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+    <defs>
+      <linearGradient id="metaGrad" x1="0" y1="4" x2="48" y2="44" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor="#4FA8FF" />
+        <stop offset="1" stopColor="#0B5FDB" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M9 32c0-8.5 4-15.5 9-15.5 3.2 0 5 2.6 6.9 7 1.9-4.4 3.7-7 6.9-7 5 0 9 7 9 15.5-1.6-6.5-4.9-11.2-8.3-11.2-2.7 0-4.6 2.9-6.3 6.7-.4.9-.8 1.9-1.3 3-.5-1.1-.9-2.1-1.3-3-1.7-3.8-3.6-6.7-6.3-6.7-3.4 0-6.7 4.7-8.3 11.2Z"
+      fill="url(#metaGrad)"
+    />
+  </svg>
+);
+
+export const ShopifyMark = ({ size = 40 }) => (
+  <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+    <defs>
+      <linearGradient id="shopGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor="#95D53F" />
+        <stop offset="1" stopColor="#5A8F29" />
+      </linearGradient>
+    </defs>
+    <rect x="5" y="10" width="38" height="34" rx="8" fill="url(#shopGrad)" />
+    <path d="M14 16.5c0-5 3.8-9.5 9-9.5" stroke="url(#shopGrad)" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+    <path d="M28.5 16.5c0-5 3.8-9.5 9-9.5" stroke="url(#shopGrad)" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+    <text x="24" y="33.5" textAnchor="middle" fontSize="21" fontWeight="800" fill="#fff" fontFamily="Arial, sans-serif">S</text>
+  </svg>
+);
+
+export const GoogleMark = ({ size = 40 }) => (
+  <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+    <path d="M44 24.5c0-1.6-.1-3.1-.4-4.6H24v9h11.3c-.5 2.7-2 4.9-4.3 6.4v5.3h6.9C41.9 36.7 44 31.1 44 24.5Z" fill="#4285F4" />
+    <path d="M24 44c5.8 0 10.7-1.9 14.2-5.2l-6.9-5.3c-1.9 1.3-4.4 2.1-7.3 2.1-5.6 0-10.3-3.8-12-8.9h-7.1v5.5C8.4 39.4 15.6 44 24 44Z" fill="#34A853" />
+    <path d="M12 26.7c-.4-1.3-.7-2.7-.7-4.2s.2-2.9.7-4.2v-5.5H4.9C3.4 15.7 2.5 19.7 2.5 24s.9 8.3 2.4 11.2L12 26.7Z" fill="#FBBC05" />
+    <path d="M24 9.9c3.2 0 6 1.1 8.2 3.2l6.1-6.1C34.7 3.5 29.8 1.5 24 1.5c-8.4 0-15.6 4.6-19.1 12.5l7.1 5.5c1.7-5.1 6.4-8.9 12-8.9Z" fill="#EA4335" />
+  </svg>
+);
+
+export const BrandofiMark = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
+    <path
+      d="M4 20c2-8 8-13 16-14-1 6-3 10-8 13.5-3 2.1-6 2.2-8 .5Z"
+      fill="#C4E065"
+    />
+    <path
+      d="M4 20c4 1 9-.4 13-3.6"
+      stroke="#8FB63E"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      fill="none"
+    />
+  </svg>
+);

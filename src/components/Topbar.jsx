@@ -1,4 +1,5 @@
 import React from "react";
+import { ChevronDownIcon } from "./Icons";
 
 export default function Topbar({ crumbs, onShare, onExport, exportDisabled }) {
   return (
@@ -8,15 +9,14 @@ export default function Topbar({ crumbs, onShare, onExport, exportDisabled }) {
         <b>{crumbs[crumbs.length - 1]}</b>
       </div>
       <div className="topbar-actions">
-        <div className="pill">All data ▾</div>
-        <div className="pill">₹ INR ▾</div>
-        <div className="pill" onClick={onShare}>⇪ Share</div>
+        <div className="pill pill-outline">All data <ChevronDownIcon width={11} height={11} /></div>
+        <div className="pill pill-outline">INR <ChevronDownIcon width={11} height={11} /></div>
+        <div className="pill pill-outline" onClick={onShare}>Share</div>
         <div
-          className={"pill primary" + (exportDisabled ? " " : "")}
+          className={"pill pill-solid" + (exportDisabled ? " disabled" : "")}
           onClick={exportDisabled ? undefined : onExport}
-          style={exportDisabled ? { opacity: 0.5, cursor: "default" } : {}}
         >
-          ⬇ Export
+          Export
         </div>
       </div>
     </div>
