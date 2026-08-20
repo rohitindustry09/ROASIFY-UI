@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { fmtINR, fmtNum, fmtROI, fmtPct } from "../lib/format";
 import { ChevronDownIcon, DownloadIcon } from "./Icons";
 
@@ -31,6 +31,20 @@ export default function ProductTable({ rows, defaultQuadrant = "ALL", filename =
   const [page, setPage] = useState(1);
   const [visibleCols, setVisibleCols] = useState(DEFAULT_VISIBLE);
   const [fname, setFname] = useState(filename);
+
+  const chipWrapRef = useRef(null);
+  const chipRefs = useRef({});
+  const [chipIndicator, setChipIndicator] = useState({ left: 0, width: 0, ready: false });
+
+  useLayoutEffect(() => {
+    const el = chipRefs.current[quadFilter];
+    const parent = chipWrapRef.current;
+    if (el && parent) {
+      const pRect = parent.getBoundingClientRect();
+      const eRect = el.getBoundingClientRect();
+      setChipIndicator({ left: eRect.left - pRect.left, width: eRect.width, ready: true });
+    }
+  }, [quadFilter, rows]);
 
   const filtered = useMemo(() => {
     let out = rows;
@@ -151,15 +165,24 @@ export default function ProductTable({ rows, defaultQuadrant = "ALL", filename =
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
         />
-        {["ALL", "champions", "contenders", "cruisers", "casualties"].map((q) => (
-          <span
-            key={q}
-            className={"filter-chip" + (quadFilter === q ? " active" : "")}
-            onClick={() => { setQuadFilter(q); setPage(1); }}
-          >
-            {q === "ALL" ? "All" : QNAMES[q]}
-          </span>
-        ))}
+        <div className="chip-wrap" ref={chipWrapRef}>
+          {chipIndicator.ready && (
+            <div
+              className="chip-indicator"
+              style={{ transform: `translateX(${chipIndicator.left}px)`, width: chipIndicator.width }}
+            />
+          )}
+          {["ALL", "champions", "contenders", "cruisers", "casualties"].map((q) => (
+            <span
+              key={q}
+              ref={(el) => (chipRefs.current[q] = el)}
+              className={"filter-chip" + (quadFilter === q ? " active" : "")}
+              onClick={() => { setQuadFilter(q); setPage(1); }}
+            >
+              {q === "ALL" ? "All" : QNAMES[q]}
+            </span>
+          ))}
+        </div>
       </div>
 
       <div className="table-wrap">

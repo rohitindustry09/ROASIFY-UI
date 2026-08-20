@@ -45,7 +45,7 @@ export default function UploadCard({
       )}
 
       <div className={"uh-banner " + source}>
-        <Logo size={44} />
+        <Logo size={62} />
       </div>
 
       <div className="uh-body">
@@ -94,7 +94,7 @@ export default function UploadCard({
             handleFile(f);
           }}
         >
-          <span className="dz-pill">
+          <span className={"dz-pill " + (source === "google" ? "dz-pill-accent" : "dz-pill-lime")}>
             {busy ? (
               <span className="dz-spinner" />
             ) : (

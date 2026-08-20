@@ -1,15 +1,26 @@
 import React from "react";
 import { fmtINR, fmtNum, fmtROI } from "../lib/format";
+import { useAnimatedNumber } from "../lib/useAnimatedNumber";
+
+function Stat({ label, value, fmt, className = "" }) {
+  const shown = useAnimatedNumber(value);
+  return (
+    <div className="card">
+      <div className="lbl">{label}</div>
+      <div className={"val " + className}>{fmt(shown)}</div>
+    </div>
+  );
+}
 
 export default function SummaryCards({ totals }) {
   return (
     <div className="cards">
-      <div className="card"><div className="lbl">Products</div><div className="val">{fmtNum(totals.products)}</div></div>
-      <div className="card"><div className="lbl">Meta Spend</div><div className="val">{fmtINR(totals.metaSpend)}</div></div>
-      <div className="card"><div className="lbl">Google Cost</div><div className="val">{fmtINR(totals.googleCost)}</div></div>
-      <div className="card"><div className="lbl">Total Spend</div><div className="val">{fmtINR(totals.totalSpend)}</div></div>
-      <div className="card"><div className="lbl">Revenue</div><div className="val">{fmtINR(totals.revenue)}</div></div>
-      <div className="card"><div className="lbl">Overall ROI</div><div className={"val roi" + (totals.roi < 0 ? " neg" : "")}>{fmtROI(totals.roi)}</div></div>
+      <Stat label="Products" value={totals.products} fmt={fmtNum} />
+      <Stat label="Meta Spend" value={totals.metaSpend} fmt={fmtINR} />
+      <Stat label="Google Cost" value={totals.googleCost} fmt={fmtINR} />
+      <Stat label="Total Spend" value={totals.totalSpend} fmt={fmtINR} />
+      <Stat label="Revenue" value={totals.revenue} fmt={fmtINR} />
+      <Stat label="Overall ROI" value={totals.roi} fmt={fmtROI} className={"roi" + (totals.roi < 0 ? " neg" : "")} />
     </div>
   );
 }

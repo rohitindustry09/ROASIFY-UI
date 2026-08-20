@@ -8,6 +8,21 @@ import { quadrantSummary } from "../lib/merge";
 import { fmtINR, fmtNum, fmtROI } from "../lib/format";
 import { StarIcon, DiamondIcon, CircleIcon, AlertIcon, ArrowRightIcon, SparkleIcon, DownloadIcon } from "../components/Icons";
 import { downloadRowsAsCSV } from "../lib/csv";
+import { useAnimatedNumber } from "../lib/useAnimatedNumber";
+
+function AnimatedVal({ value, fmt, className = "", style }) {
+  const shown = useAnimatedNumber(value);
+  return <div className={"v " + className} style={style}>{fmt(shown)}</div>;
+}
+function AnimatedCard({ label, value, fmt, className = "" }) {
+  const shown = useAnimatedNumber(value);
+  return (
+    <div className="card">
+      <div className="lbl">{label}</div>
+      <div className={"val " + className}>{fmt(shown)}</div>
+    </div>
+  );
+}
 
 const QDEF = {
   champions: { name: "Champions", desc: "High revenue · Low spend", badge: ["Scale", "badge-scale"], icon: StarIcon },
@@ -87,10 +102,10 @@ export default function QuadrantView() {
         </div>
 
         <div className="cards quad4">
-          <div className="card"><div className="lbl">Total Products</div><div className="val">{fmtNum(merged.totals.products)}</div></div>
-          <div className="card"><div className="lbl">Total Spend</div><div className="val">{fmtINR(merged.totals.totalSpend)}</div></div>
-          <div className="card"><div className="lbl">Total Revenue</div><div className="val">{fmtINR(merged.totals.revenue)}</div></div>
-          <div className="card"><div className="lbl">Overall ROI</div><div className="val roi">{fmtROI(merged.totals.roi)}</div></div>
+          <AnimatedCard label="Total Products" value={merged.totals.products} fmt={fmtNum} />
+          <AnimatedCard label="Total Spend" value={merged.totals.totalSpend} fmt={fmtINR} />
+          <AnimatedCard label="Total Revenue" value={merged.totals.revenue} fmt={fmtINR} />
+          <AnimatedCard label="Overall ROI" value={merged.totals.roi} fmt={fmtROI} className="roi" />
         </div>
 
         <div className="quad-hero">
@@ -139,10 +154,10 @@ export default function QuadrantView() {
                 </div>
                 <div className="qdesc">{def.desc}</div>
                 <div className="qstats">
-                  <div><div className="l">Products</div><div className="v">{fmtNum(s.products)}</div></div>
-                  <div><div className="l">Spend</div><div className="v">{fmtINR(s.spend)}</div></div>
-                  <div><div className="l">Revenue</div><div className="v">{fmtINR(s.revenue)}</div></div>
-                  <div><div className="l">ROI</div><div className="v" style={{ color: s.roi >= 0 ? "var(--green)" : "var(--red)" }}>{fmtROI(s.roi)}</div></div>
+                  <div><div className="l">Products</div><AnimatedVal value={s.products} fmt={fmtNum} /></div>
+                  <div><div className="l">Spend</div><AnimatedVal value={s.spend} fmt={fmtINR} /></div>
+                  <div><div className="l">Revenue</div><AnimatedVal value={s.revenue} fmt={fmtINR} /></div>
+                  <div><div className="l">ROI</div><AnimatedVal value={s.roi} fmt={fmtROI} style={{ color: s.roi >= 0 ? "var(--green)" : "var(--red)" }} /></div>
                 </div>
                 <div className="view-link">View all {fmtNum(s.products)} products ↓</div>
               </div>

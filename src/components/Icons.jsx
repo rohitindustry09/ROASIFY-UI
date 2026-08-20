@@ -54,58 +54,82 @@ export const InboxIcon = (p) => (
   <svg {...base} width={40} height={40} {...p}><path d="M22 12h-6l-2 3h-4l-2-3H2" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z" /></svg>
 );
 
-/* ---- Source / brand marks (stylized, not literal trademarked artwork) ---- */
+/* ---- Source / brand marks — traced from the brandofi mockup, exact fills ---- */
 
+/* Meta: infinity ribbon, two-tone gradient matching the mockup's woven shading. */
 export const MetaMark = ({ size = 40 }) => (
-  <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
     <defs>
-      <linearGradient id="metaGrad" x1="0" y1="4" x2="48" y2="44" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stopColor="#4FA8FF" />
-        <stop offset="1" stopColor="#0B5FDB" />
+      <linearGradient id="metaGrad" x1="0" y1="16" x2="64" y2="48" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor="#4060B5" />
+        <stop offset="0.5" stopColor="#4A74C3" />
+        <stop offset="1" stopColor="#4060B5" />
       </linearGradient>
     </defs>
     <path
-      d="M9 32c0-8.5 4-15.5 9-15.5 3.2 0 5 2.6 6.9 7 1.9-4.4 3.7-7 6.9-7 5 0 9 7 9 15.5-1.6-6.5-4.9-11.2-8.3-11.2-2.7 0-4.6 2.9-6.3 6.7-.4.9-.8 1.9-1.3 3-.5-1.1-.9-2.1-1.3-3-1.7-3.8-3.6-6.7-6.3-6.7-3.4 0-6.7 4.7-8.3 11.2Z"
+      fillRule="evenodd"
+      clipRule="evenodd"
       fill="url(#metaGrad)"
+      d="M48.44 16.44C40.70 16.44 34.92 23.24 32.00 27.69C29.08 23.24 23.30 16.44 15.56 16.44C6.98 16.44 0.00 23.41 0.00 32.00C0.00 40.60 6.98 47.56 15.56 47.56C23.30 47.56 29.08 40.76 32.00 36.31C34.92 40.76 40.70 47.56 48.44 47.56C57.03 47.56 64.00 40.60 64.00 32.00C64.00 23.41 57.03 16.44 48.44 16.44ZM15.56 42.76C9.63 42.76 4.80 37.79 4.80 32.00C4.80 26.21 9.63 21.24 15.56 21.24C22.25 21.24 27.28 28.29 28.56 32.00C27.18 36.08 22.37 42.76 15.56 42.76ZM48.44 42.76C41.63 42.76 36.82 36.08 35.44 32.00C36.72 28.29 41.75 21.24 48.44 21.24C54.37 21.24 59.20 26.21 59.20 32.00C59.20 37.79 54.37 42.76 48.44 42.76Z"
     />
   </svg>
 );
 
+/* Shopify: 3D bag — bright front face, darker shadow side, two handle
+   loops, bold white S. Colors #86C532 / #538F31 sampled from the mockup. */
 export const ShopifyMark = ({ size = 40 }) => (
-  <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
-    <defs>
-      <linearGradient id="shopGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stopColor="#95D53F" />
-        <stop offset="1" stopColor="#5A8F29" />
-      </linearGradient>
-    </defs>
-    <rect x="5" y="10" width="38" height="34" rx="8" fill="url(#shopGrad)" />
-    <path d="M14 16.5c0-5 3.8-9.5 9-9.5" stroke="url(#shopGrad)" strokeWidth="3.2" fill="none" strokeLinecap="round" />
-    <path d="M28.5 16.5c0-5 3.8-9.5 9-9.5" stroke="url(#shopGrad)" strokeWidth="3.2" fill="none" strokeLinecap="round" />
-    <text x="24" y="33.5" textAnchor="middle" fontSize="21" fontWeight="800" fill="#fff" fontFamily="Arial, sans-serif">S</text>
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+    <path d="M42 15c3.4.6 6.6 1.1 6.6 1.1s2.4 2.4 2.7 2.7c.3.3.5 1.6.5 1.6l3.2 34-15 3.4V15Z" fill="#538F31" />
+    <path d="M42 15c-.2 0-.5-.1-.9-.1v-.2c0-3-1.5-5.5-4-6.7 1-.3 1.9-.4 2.6-.4 0 0 1.7 2.2 2.3 7.4Z" fill="#538F31" />
+    <path
+      d="M41.1 14.9s-.9-.2-2.4-.2c-1.4 0-2.6.4-3.4.9-.8-.9-1.8-1.3-2.9-1.3-6.5 0-9.6 8.1-10.5 12.2-2.6.8-4.4 1.4-4.7 1.5-1.4.4-1.4.5-1.6 1.8L11.6 58l30.4 5.7V14.9h-.9Z"
+      fill="#86C532"
+    />
+    <path
+      d="M31.4 20.2c-1.9.6-4 1.2-6 1.9.6-2.2 1.7-4.4 3-5.9.5-.6 1.2-1.2 2-1.6.9 1.5 1.1 3.9 1 5.6ZM27 15c.7 0 1.3.2 1.8.5-.7.4-1.4 1.1-2.1 1.9-1.7 1.9-3 4.8-3.5 7.6-1.6.5-3.2 1-4.7 1.4C19.6 21.6 23 15.2 27 15Z"
+      fill="#6FA82B"
+    />
+    <path d="M22 22c0-4.4 3.1-9.6 8-9.6" stroke="#86C532" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+    <path d="M33.5 20.4c0-4.9 2.8-11 8-11" stroke="#86C532" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+    <path
+      d="M35.5 26.5c-1.6-.6-3.5-1-5.3-.7-3.5.6-5.7 3.7-5 6.5.6 2.3 2.8 3.4 5.2 4.6 1.8.9 3.7 1.9 4 3.4.3 1.3-.5 2.7-2.4 3-2.5.5-6-.7-6-.7l-.8 4.3s3.1 1.4 6.8.8c4.5-.7 6.9-3.7 6.3-6.9-.5-2.6-2.8-3.8-5.1-5-1.9-1-3.7-1.9-4-3.3-.2-1.1.5-2.3 2.2-2.6 2-.4 4.6.5 4.6.5l1-4.1Z"
+      fill="#FFFFFF"
+    />
   </svg>
 );
 
+/* Google: four-arc pinwheel with a cream centre and a protruding blue tab —
+   the mockup's "G" treatment, exact arc colors from the source file. */
 export const GoogleMark = ({ size = 40 }) => (
-  <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
-    <path d="M44 24.5c0-1.6-.1-3.1-.4-4.6H24v9h11.3c-.5 2.7-2 4.9-4.3 6.4v5.3h6.9C41.9 36.7 44 31.1 44 24.5Z" fill="#4285F4" />
-    <path d="M24 44c5.8 0 10.7-1.9 14.2-5.2l-6.9-5.3c-1.9 1.3-4.4 2.1-7.3 2.1-5.6 0-10.3-3.8-12-8.9h-7.1v5.5C8.4 39.4 15.6 44 24 44Z" fill="#34A853" />
-    <path d="M12 26.7c-.4-1.3-.7-2.7-.7-4.2s.2-2.9.7-4.2v-5.5H4.9C3.4 15.7 2.5 19.7 2.5 24s.9 8.3 2.4 11.2L12 26.7Z" fill="#FBBC05" />
-    <path d="M24 9.9c3.2 0 6 1.1 8.2 3.2l6.1-6.1C34.7 3.5 29.8 1.5 24 1.5c-8.4 0-15.6 4.6-19.1 12.5l7.1 5.5c1.7-5.1 6.4-8.9 12-8.9Z" fill="#EA4335" />
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+    <g transform="rotate(-45 32 32)">
+      <circle cx="32" cy="32" r="21" fill="none" stroke="#EF3A25" strokeWidth="14" strokeDasharray="33 99" strokeDashoffset="0" />
+      <circle cx="32" cy="32" r="21" fill="none" stroke="#F8D505" strokeWidth="14" strokeDasharray="33 99" strokeDashoffset="-33" />
+      <circle cx="32" cy="32" r="21" fill="none" stroke="#34B53F" strokeWidth="14" strokeDasharray="33 99" strokeDashoffset="-66" />
+      <circle cx="32" cy="32" r="21" fill="none" stroke="#4675C3" strokeWidth="14" strokeDasharray="33 99" strokeDashoffset="-99" />
+    </g>
+    <circle cx="32" cy="32" r="13.5" fill="#F8E3CD" />
+    <rect x="31" y="22" width="15" height="12" rx="2" fill="#4675C3" />
   </svg>
 );
 
+/* brandofi wordmark icon — the growth-arrow/flag mark that replaces the
+   "a" in the sidebar logo card. Lime #D7E721, as sampled from the PDF. */
 export const BrandofiMark = ({ size = 22 }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
+    <circle cx="8.5" cy="24" r="2.6" fill="#D7E721" />
     <path
-      d="M4 20c2-8 8-13 16-14-1 6-3 10-8 13.5-3 2.1-6 2.2-8 .5Z"
-      fill="#C4E065"
+      d="M10.2 22.3 21 11.5"
+      stroke="#D7E721"
+      strokeWidth="2.6"
+      strokeLinecap="round"
     />
     <path
-      d="M4 20c4 1 9-.4 13-3.6"
-      stroke="#8FB63E"
-      strokeWidth="1.6"
+      d="M13 9.5h11v11"
+      stroke="#D7E721"
+      strokeWidth="2.6"
       strokeLinecap="round"
+      strokeLinejoin="round"
       fill="none"
     />
   </svg>
