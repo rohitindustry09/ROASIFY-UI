@@ -1,8 +1,9 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Topbar from "../components/Topbar";
-import { readFileAsGrid, findHeaderRow, gridToObjects, buildColumnMap } from "../lib/fileParse";
-import { fmtINR, fmtNum, fmtPct, fmtBytes } from "../lib/format";
-import { CheckIcon, RefreshIcon, DownloadIcon, XIcon } from "../components/Icons";
+import UploadCard from "../components/UploadCard";
+import { buildColumnMap } from "../lib/fileParse";
+import { fmtINR, fmtNum, fmtPct } from "../lib/format";
+import { DownloadIcon } from "../components/Icons";
 
 const CANDIDATE_COLS = {
   code: ["discount code", "discount codes", "coupon", "promo code"],
@@ -23,43 +24,34 @@ function toNum(v) {
 export default function DiscountAnalysis() {
   const [fileInfo, setFileInfo] = useState(null);
   const [rows, setRows] = useState(null);
-  const [error, setError] = useState(null);
-  const [busy, setBusy] = useState(false);
-  const [dragOver, setDragOver] = useState(false);
+  const [colError, setColError] = useState(null);
   const [search, setSearch] = useState("");
-  const inputRef = useRef(null);
 
-  async function handleFile(file) {
-    if (!file) return;
-    setBusy(true);
-    setError(null);
-    try {
-      const grid = await readFileAsGrid(file);
-      const headerIdx = findHeaderRow(grid, REQUIRED_FRAGMENTS);
-      if (headerIdx === -1) {
-        throw new Error(
-          "No discount-related column found. Export orders from Shopify (Orders → Export) with the \"Discount Code\" and \"Discount Amount\" columns included."
-        );
-      }
-      const objRows = gridToObjects(grid, headerIdx);
-      if (!objRows.length) throw new Error("No data rows found in this file.");
-      const cols = buildColumnMap(Object.keys(objRows[0]), CANDIDATE_COLS);
-      if (!cols.discountAmount && !cols.code) {
-        throw new Error("Couldn't find discount code or discount amount columns in this file.");
-      }
-      const parsed = objRows.map((r) => ({
-        code: (cols.code ? String(r[cols.code] ?? "").trim() : "") || "(no code)",
-        discount: cols.discountAmount ? toNum(r[cols.discountAmount]) : 0,
-        total: cols.orderTotal ? toNum(r[cols.orderTotal]) : 0,
-        orderId: cols.orderId ? String(r[cols.orderId] ?? "") : "",
-      }));
-      setRows(parsed);
-      setFileInfo({ name: file.name, size: file.size, rowCount: parsed.length });
-    } catch (e) {
-      setError(e.message || "Couldn't read this file.");
-    } finally {
-      setBusy(false);
+  function handleLoaded({ name, size, rows: objRows }) {
+    setColError(null);
+    if (!objRows.length) {
+      setColError("No data rows found in this file.");
+      return;
     }
+    const cols = buildColumnMap(Object.keys(objRows[0]), CANDIDATE_COLS);
+    if (!cols.discountAmount && !cols.code) {
+      setColError("Couldn't find discount code or discount amount columns in this file.");
+      return;
+    }
+    const parsed = objRows.map((r) => ({
+      code: (cols.code ? String(r[cols.code] ?? "").trim() : "") || "(no code)",
+      discount: cols.discountAmount ? toNum(r[cols.discountAmount]) : 0,
+      total: cols.orderTotal ? toNum(r[cols.orderTotal]) : 0,
+      orderId: cols.orderId ? String(r[cols.orderId] ?? "") : "",
+    }));
+    setRows(parsed);
+    setFileInfo({ name, size, rowCount: parsed.length });
+  }
+
+  function handleRemove() {
+    setFileInfo(null);
+    setRows(null);
+    setColError(null);
   }
 
   const byCode = useMemo(() => {
@@ -127,56 +119,18 @@ export default function DiscountAnalysis() {
         </div>
 
         <div className="upload-grid" style={{ gridTemplateColumns: "1fr" }}>
-          <div className={"upload-card" + (fileInfo ? " filled" : "")}>
-            {fileInfo && (
-              <button className="close-x" onClick={() => { setFileInfo(null); setRows(null); }}>
-                <XIcon />
-              </button>
-            )}
-            <div className="uh">
-              <div className="src-icon shopify">S</div>
-              <div>
-                <div className="name">Shopify Orders Export <span className="badge-req">Required</span></div>
-                <div className="fields">Discount Code · Discount Amount · Total · Order · Created At</div>
-              </div>
-            </div>
-
-            <input
-              ref={inputRef}
-              type="file"
-              accept=".csv,.xlsx,.xls,.txt"
-              style={{ display: "none" }}
-              onChange={(e) => { handleFile(e.target.files?.[0]); e.target.value = ""; }}
-            />
-
-            {fileInfo ? (
-              <div className="file-chip">
-                <div className="fc-left">
-                  <span className="fc-check"><CheckIcon /></span>
-                  <div style={{ minWidth: 0 }}>
-                    <div className="fc-name">{fileInfo.name}</div>
-                    <div className="fc-meta">{fmtBytes(fileInfo.size)} · {fileInfo.rowCount.toLocaleString("en-IN")} orders</div>
-                  </div>
-                </div>
-                <div className="fc-actions">
-                  <button className="icon-btn" onClick={() => inputRef.current?.click()}><RefreshIcon /></button>
-                </div>
-              </div>
-            ) : (
-              <div
-                className={"dropzone" + (dragOver ? " dragover" : "")}
-                onClick={() => inputRef.current?.click()}
-                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-                onDragLeave={() => setDragOver(false)}
-                onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files?.[0]); }}
-              >
-                <div className="dz-main">{busy ? "Reading file…" : "Drop CSV or Excel here"}</div>
-                <div className="dz-sub">Shopify → Orders → Export · or click to browse · max 50 MB</div>
-              </div>
-            )}
-            {error && <div className="error-msg">{error}</div>}
-          </div>
+          <UploadCard
+            source="shopify"
+            name="Shopify Orders Export"
+            required
+            fieldsLabel="Discount Code · Discount Amount · Total · Order · Created At"
+            requiredFragments={REQUIRED_FRAGMENTS}
+            fileInfo={fileInfo}
+            onLoaded={handleLoaded}
+            onRemove={handleRemove}
+          />
         </div>
+        {colError && <div className="error-msg" style={{ marginTop: -8, marginBottom: 16 }}>{colError}</div>}
 
         {!rows && (
           <div className="empty-state">
